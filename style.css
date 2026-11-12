@@ -174,3 +174,11 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 .modal-head h2 { margin: 0; flex: 1; }
 .lesson-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; }
 .lesson-row .full { grid-column: 1 / -1; }
+
+/* Полоска слева у пары = статус (а не цвет предмета). Цвет предмета — точка у названия. */
+.lesson.st-none    { border-left-color: var(--q-none); }
+.lesson.st-active  { border-left-color: var(--q-active); }
+.lesson.st-done    { border-left-color: var(--q-done); }
+.lesson.st-overdue { border-left-color: var(--q-overdue); }
+.lesson { border-left-width: 6px; transition: background .15s, border-color .15s; }
+.lesson .name .dot { vertical-align: 1px; }

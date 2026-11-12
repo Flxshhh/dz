@@ -11,10 +11,9 @@ const LESSON_TYPES = ['Лекция', 'Практика', 'Лаба', 'Семи�
 const COLORS = ['#4f46e5', '#0891b2', '#059669', '#d97706', '#dc2626', '#db2777', '#7c3aed', '#65a30d', '#0d9488', '#ea580c'];
 
 const STATUS = {
-  waiting: { label: 'Висит', hint: 'ещё нельзя сделать — не задано' },
-  active:  { label: 'Можно делать', hint: 'задано, но не сделано' },
+  active:  { label: 'Надо сделать', hint: 'задано, но не сделано' },
   done:    { label: 'Сделано', hint: '' },
-  overdue: { label: 'Просрочено', hint: 'срок прошёл, не сделано' },
+  overdue: { label: 'Не сделано', hint: 'не сделано / долг' },
 };
 
 /* ---------------------------- Даты ---------------------------------- */
@@ -116,24 +115,24 @@ function prevLessonDate(subjectId, dateISO) {
   return null;
 }
 
-/*  Статус ДЗ на дату today:
- *    done    — отмечено сделанным                       → зелёный
- *    overdue — срок прошёл, не сделано                  → красный
- *    waiting — ещё не задано (today < assigned)         → серый, «висит»
- *    active  — задано, срок не прошёл, не сделано       → жёлтый
- *  Пример: пара в Пн (assigned), следующая в Пт (due).
- *  С Пн по Пт включительно — жёлтый; отметил — зелёный; Сб и далее без отметки — красный.
+/*  Статус ДЗ — ровно то, что выбрано кружком (никакой автоматики, чтобы цвет не менялся сам):
+ *    done    — 🟢 сделано
+ *    overdue — 🔴 не сделано / долг
+ *    active  — 🟡 задано, надо сделать
+ *  Даты используются только для подсказок: «можно делать с …» и «срок прошёл».
  */
-function hwStatus(hw, today = todayISO()) {
+function hwStatus(hw) {
   if (hw.done) return 'done';
-  if (hw.failed) return 'overdue';            // красный, выставленный вручную
-  if (today > hw.due) return 'overdue';       // сравнение 'YYYY-MM-DD' строками корректно
-  if (today < hw.assigned) return 'waiting';
+  if (hw.failed) return 'overdue';
   return 'active';
 }
+// жёлтое ДЗ, у которого уже прошёл срок, — показываем предупреждение, но цвет не меняем
+const isLate = (hw, today = todayISO()) => hwStatus(hw) === 'active' && today > hw.due;
+// жёлтое ДЗ, которое ещё физически нельзя сделать (предыдущая пара не наступила)
+const isEarly = (hw, today = todayISO()) => hwStatus(hw) === 'active' && today < hw.assigned;
 
 // Цвет пары = «худший» статус среди ДЗ, которые надо сдать на этой паре
-const PRIORITY = ['overdue', 'active', 'waiting', 'done'];
+const PRIORITY = ['overdue', 'active', 'done'];
 function occurrenceStatus(subjectId, dateISO) {
   const list = state.homework.filter((h) => h.subjectId === subjectId && h.due === dateISO);
   if (!list.length) return null;
@@ -180,8 +179,8 @@ function renderSummary() {
   state.homework.forEach((h) => { const s = hwStatus(h); if (s in counts) counts[s]++; });
   const debts = state.subjects.reduce((n, s) => n + s.debts.filter((d) => !d.closed).length, 0);
   $('#summary').innerHTML =
-    (counts.overdue ? `<span class="badge st-overdue">Просрочено: ${counts.overdue}</span>` : '') +
-    `<span class="badge st-active">Можно делать: ${counts.active}</span>` +
+    (counts.overdue ? `<span class="badge st-overdue">Не сделано: ${counts.overdue}</span>` : '') +
+    `<span class="badge st-active">Надо сделать: ${counts.active}</span>` +
     (debts ? `<span class="badge st-overdue">Долгов: ${debts}</span>` : `<span class="badge st-done">Долгов нет</span>`);
 }
 
@@ -212,7 +211,8 @@ function renderSchedule(view) {
       <span class="muted">· неделя ${n} (${n % 2 ? 'нечётная' : 'чётная'})</span>
     </div>
     <div class="legend">
-      ${['waiting', 'active', 'done', 'overdue'].map((s) => `<span class="badge st-${s}" title="${STATUS[s].hint}">${STATUS[s].label}</span>`).join('')}
+      <span class="badge st-none">Нет ДЗ</span>
+      ${['active', 'done', 'overdue'].map((s) => `<span class="badge st-${s}">${STATUS[s].label}</span>`).join('')}
       <span class="muted" style="font-size:12px">· отмечай кружками прямо на паре; нажми на саму пару, чтобы записать текст ДЗ</span>
     </div>
     <div class="week">`;
@@ -228,14 +228,15 @@ function renderSchedule(view) {
       const st = occurrenceStatus(s.id, d);
       const hws = state.homework.filter((h) => h.subjectId === s.id && h.due === d);
       // какой кружок подсвечен: «висит» — это тоже жёлтый, просто день ещё не наступил
-      const cur = !st ? 'none' : st === 'waiting' ? 'active' : st;
+      const cur = st || 'none';
       html += `<div class="lesson st-${st || 'none'}" style="--subj:${s.color}">
        <div class="lesson-main" data-lesson="${l.id}" data-date="${d}" role="button" tabindex="0">
         <div class="time">${esc(l.start)}–${esc(l.end)} · ${esc(l.type)}</div>
-        <div class="name">${esc(s.name)}</div>
+        <div class="name"><span class="dot"></span> ${esc(s.name)}</div>
         ${l.room || l.teacher ? `<div class="meta">${[l.room && 'ауд. ' + esc(l.room), esc(l.teacher)].filter(Boolean).join(' · ')}</div>` : ''}
         ${hws.filter((h) => h.text).map((h) => `<div class="hw">${h.done ? '✓' : '•'} ${esc(h.text)}</div>`).join('')}
-        ${st === 'waiting' ? `<div class="hw">можно делать с ${human(hws[0].assigned)}</div>` : ''}
+        ${hws.some((h) => isLate(h)) ? `<div class="hw">⚠ срок прошёл — отметь 🟢 или 🔴</div>` : ''}
+        ${hws.some((h) => isEarly(h)) ? `<div class="hw">можно делать с ${humanFull(hws.find((h) => isEarly(h)).assigned)}</div>` : ''}
        </div>
        <div class="quick">${QUICK.map(([k, title]) =>
          `<button class="q q-${k} ${cur === k ? 'on' : ''}" title="${title}" aria-label="${title}"
@@ -351,11 +352,12 @@ function taskHTML(h) {
   const st = hwStatus(h);
   const left = daysBetween(todayISO(), h.due);
   const when = st === 'done' ? `сдано ${h.doneAt ? human(h.doneAt) : ''}`
-    : st === 'overdue' ? `просрочено на ${-left} дн.`
-    : st === 'waiting' ? `можно делать с ${human(h.assigned)}`
+    : st === 'overdue' ? 'не сделано'
+    : left < 0 ? `⚠ срок прошёл ${-left} дн. назад`
+    : isEarly(h) ? `можно делать с ${human(h.assigned)}`
     : left === 0 ? 'сдать сегодня' : left === 1 ? 'сдать завтра' : `осталось ${left} дн.`;
   return `<div class="task st-${st}" style="--subj:${s ? s.color : 'gray'}">
-    <input type="checkbox" data-toggle="${h.id}" ${h.done ? 'checked' : ''} ${st === 'waiting' ? 'disabled title="Ещё не задано"' : ''}>
+    <input type="checkbox" data-toggle="${h.id}" ${h.done ? 'checked' : ''}>
     <div class="body">
       <div class="text">${h.text ? esc(h.text) : '<span class="muted">без описания</span>'}</div>
       <div class="meta"><b>${esc(s ? s.name : '?')}</b> · до ${humanFull(h.due)} · ${when}</div>
@@ -381,7 +383,7 @@ function bindTaskEvents(root, rerender) {
 }
 
 function renderTasks(view) {
-  const filters = { open: 'Активные', active: 'Можно делать', overdue: 'Просрочено', waiting: 'Висит', done: 'Сделано', all: 'Все' };
+  const filters = { open: 'Активные', active: 'Можно делать', overdue: 'Не сделано / долг', done: 'Сделано', all: 'Все' };
   let list = state.homework.slice();
   const f = ui.filter;
   if (f === 'open') list = list.filter((h) => hwStatus(h) !== 'done');
