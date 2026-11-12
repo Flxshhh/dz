@@ -7,7 +7,7 @@
 const STORAGE_KEY = 'dz.v1';
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const WEEKDAYS_FULL = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
-const LESSON_TYPES = ['Лекция', 'Семинар', 'Лаба', 'Практика', 'Другое'];
+const LESSON_TYPES = ['Лекция', 'Практика', 'Лаба', 'Семинар', 'Другое'];
 const COLORS = ['#4f46e5', '#0891b2', '#059669', '#d97706', '#dc2626', '#db2777', '#7c3aed', '#65a30d', '#0d9488', '#ea580c'];
 
 const STATUS = {
@@ -181,10 +181,12 @@ function renderSchedule(view) {
       <p>Пока пусто. Добавь предметы и их пары во вкладке «Предметы».</p>
       <div class="row" style="justify-content:center">
         <button class="btn primary" data-go="subjects">Добавить предметы</button>
+        <button class="btn primary" data-preset>Загрузить моё расписание</button>
         <button class="btn" data-demo>Загрузить пример</button>
       </div></div>`;
     $('[data-go]', view).onclick = () => { ui.tab = 'subjects'; render(); };
     $('[data-demo]', view).onclick = loadDemo;
+    $('[data-preset]', view).onclick = () => loadPreset();
     return;
   }
 
@@ -218,7 +220,7 @@ function renderSchedule(view) {
                 style="--subj:${s.color}" data-lesson="${l.id}" data-date="${d}">
         <div class="time">${esc(l.start)}–${esc(l.end)} · ${esc(l.type)}</div>
         <div class="name">${esc(s.name)}</div>
-        ${l.room ? `<div class="meta">ауд. ${esc(l.room)}</div>` : ''}
+        ${l.room || l.teacher ? `<div class="meta">${[l.room && 'ауд. ' + esc(l.room), esc(l.teacher)].filter(Boolean).join(' · ')}</div>` : ''}
         ${hws.map((h) => `<div class="hw">${h.done ? '✓' : '•'} ${esc(h.text)}</div>`).join('')}
       </button>`;
     }
@@ -412,7 +414,7 @@ function renderSubjects(view) {
 
       <h3>Пары</h3>
       ${ls.length ? `<ul class="plain">${ls.map((l) => `<li>${WEEKDAYS[l.weekday - 1]} ${esc(l.start)}–${esc(l.end)} · ${esc(l.type)}${
-        l.weeks !== 'all' ? ` · ${l.weeks === 'odd' ? 'нечёт.' : 'чёт.'} нед.` : ''}${l.room ? ' · ' + esc(l.room) : ''}</li>`).join('')}</ul>`
+        l.weeks !== 'all' ? ` · ${l.weeks === 'odd' ? 'нечёт.' : 'чёт.'} нед.` : ''}${l.room ? ' · ' + esc(l.room) : ''}${l.teacher ? ` <span class="muted">· ${esc(l.teacher)}</span>` : ''}</li>`).join('')}</ul>`
         : '<div class="muted">Пар нет — нажми «Изменить»</div>'}
 
       <h3>Долги</h3>
@@ -468,6 +470,7 @@ function openSubjectForm(id) {
       <option value="odd" ${l.weeks === 'odd' ? 'selected' : ''}>Нечётные недели</option>
       <option value="even" ${l.weeks === 'even' ? 'selected' : ''}>Чётные недели</option></select>
     <input type="text" name="room" value="${esc(l.room)}" placeholder="Аудитория">
+    <input type="text" name="teacher" value="${esc(l.teacher)}" placeholder="Преподаватель" class="full">
     <button type="button" class="btn small danger full" data-rm="${i}">Удалить пару</button>
   </div>`;
 
@@ -498,6 +501,7 @@ function openSubjectForm(id) {
           l.end = $('[name=end]', r).value;
           l.weeks = $('[name=weeks]', r).value;
           l.room = $('[name=room]', r).value.trim();
+          l.teacher = $('[name=teacher]', r).value.trim();
         });
         draft = { name: f.name.value, teacher: f.teacher.value, color: f.color.value };
       };
@@ -506,7 +510,7 @@ function openSubjectForm(id) {
       $('[data-add]', root).onclick = () => {
         collect();
         const last = rows[rows.length - 1];
-        rows.push({ id: uid(), weekday: last ? last.weekday : 1, start: '09:00', end: '10:30', room: '', type: 'Лекция', weeks: 'all' });
+        rows.push({ id: uid(), weekday: last ? last.weekday : 1, start: '09:00', end: '10:30', room: '', teacher: '', type: 'Лекция', weeks: 'all' });
         draw();
       };
       $$('[data-rm]', root).forEach((b) => b.onclick = () => { collect(); rows.splice(Number(b.dataset.rm), 1); draw(); });
@@ -554,6 +558,7 @@ function renderSettings(view) {
       <div class="row">
         <button class="btn" id="exp">⬇ Экспорт</button>
         <label class="btn">⬆ Импорт<input type="file" id="imp" accept="application/json,.json" hidden></label>
+        <button class="btn" id="preset">Загрузить моё расписание</button>
         <button class="btn" id="demo">Загрузить пример</button>
         <span class="spacer"></span>
         <button class="btn danger" id="wipe">Стереть всё</button>
@@ -578,6 +583,7 @@ function renderSettings(view) {
     } catch (err) { alert('Не удалось импортировать: ' + err.message); }
   };
   $('#demo').onclick = loadDemo;
+  $('#preset').onclick = () => loadPreset();
   $('#wipe').onclick = () => { if (confirm('Точно стереть все предметы, пары, ДЗ и долги?')) { state = emptyState(); save(); } };
 }
 
@@ -615,8 +621,35 @@ function loadDemo() {
   save();
 }
 
+/* ================ Моё расписание из schedule.json ==================== */
+// Формат файла: { subjects: [{ name, color, teacher?, lessons: [{ weekday, start, end, type, room?, teacher?, weeks? }] }] }
+async function loadPreset(silent = false) {
+  if (!silent && (state.subjects.length || state.homework.length) &&
+      !confirm('Заменить предметы и пары расписанием из файла? Все ДЗ и долги будут удалены.')) return;
+  try {
+    const res = await fetch('schedule.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const subjects = [], lessons = [];
+    for (const s of data.subjects) {
+      const id = uid();
+      subjects.push({ id, name: s.name, color: s.color, teacher: s.teacher || '', debts: [] });
+      for (const l of s.lessons) lessons.push({ id: uid(), subjectId: id, room: '', teacher: '', weeks: 'all', ...l });
+    }
+    state = { ...emptyState(), settings: { ...state.settings, ...(data.settings || {}) }, subjects, lessons };
+    ui.tab = 'schedule'; ui.weekStart = mondayOf(todayISO());
+    save();
+  } catch (e) {
+    if (!silent) alert('Не удалось загрузить schedule.json: ' + e.message);
+  }
+}
+
 /* ======================== Старт ===================================== */
 render();
+// Первый запуск на устройстве (данных ещё нет) — сразу подтягиваем моё расписание
+let firstRun = false;
+try { firstRun = localStorage.getItem(STORAGE_KEY) === null; } catch (_) {}
+if (firstRun) loadPreset(true);
 // Раз в минуту обновляем, чтобы статусы сменились после полуночи без перезагрузки
 let lastDay = todayISO();
 setInterval(() => { if (todayISO() !== lastDay) { lastDay = todayISO(); render(); } }, 60000);
