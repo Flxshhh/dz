@@ -1,6 +1,6 @@
 // Service worker: кэширует файлы приложения, чтобы оно открывалось без интернета.
 // При изменении файлов увеличь версию — иначе браузер будет показывать старую.
-const CACHE = 'ucheba-v2';
+const CACHE = 'ucheba-v3';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icon.svg', 'schedule.json'];
 
 self.addEventListener('install', (e) => {

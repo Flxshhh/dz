@@ -106,6 +106,16 @@ function nextLessonDate(subjectId, dateISO) {
   return null;
 }
 
+// Последняя дата пары по предмету СТРОГО до dateISO — с неё ДЗ «задано» и его можно делать
+function prevLessonDate(subjectId, dateISO) {
+  const own = state.lessons.filter((l) => l.subjectId === subjectId);
+  for (let i = 1; i <= 120 && own.length; i++) {
+    const d = addDays(dateISO, -i);
+    if (own.some((l) => lessonOccursOn(l, d))) return d;
+  }
+  return null;
+}
+
 /*  Статус ДЗ на дату today:
  *    done    — отмечено сделанным                       → зелёный
  *    overdue — срок прошёл, не сделано                  → красный
@@ -116,6 +126,7 @@ function nextLessonDate(subjectId, dateISO) {
  */
 function hwStatus(hw, today = todayISO()) {
   if (hw.done) return 'done';
+  if (hw.failed) return 'overdue';            // красный, выставленный вручную
   if (today > hw.due) return 'overdue';       // сравнение 'YYYY-MM-DD' строками корректно
   if (today < hw.assigned) return 'waiting';
   return 'active';
@@ -202,7 +213,7 @@ function renderSchedule(view) {
     </div>
     <div class="legend">
       ${['waiting', 'active', 'done', 'overdue'].map((s) => `<span class="badge st-${s}" title="${STATUS[s].hint}">${STATUS[s].label}</span>`).join('')}
-      <span class="muted" style="font-size:12px">· нажми на пару, чтобы задать или отметить ДЗ</span>
+      <span class="muted" style="font-size:12px">· отмечай кружками прямо на паре; нажми на саму пару, чтобы записать текст ДЗ</span>
     </div>
     <div class="week">`;
 
@@ -216,13 +227,20 @@ function renderSchedule(view) {
       const s = subjectById(l.subjectId);
       const st = occurrenceStatus(s.id, d);
       const hws = state.homework.filter((h) => h.subjectId === s.id && h.due === d);
-      html += `<button class="lesson ${st ? 'st-' + st : ''} ${d < today && !st ? 'past' : ''}"
-                style="--subj:${s.color}" data-lesson="${l.id}" data-date="${d}">
+      // какой кружок подсвечен: «висит» — это тоже жёлтый, просто день ещё не наступил
+      const cur = !st ? 'none' : st === 'waiting' ? 'active' : st;
+      html += `<div class="lesson st-${st || 'none'}" style="--subj:${s.color}">
+       <div class="lesson-main" data-lesson="${l.id}" data-date="${d}" role="button" tabindex="0">
         <div class="time">${esc(l.start)}–${esc(l.end)} · ${esc(l.type)}</div>
         <div class="name">${esc(s.name)}</div>
         ${l.room || l.teacher ? `<div class="meta">${[l.room && 'ауд. ' + esc(l.room), esc(l.teacher)].filter(Boolean).join(' · ')}</div>` : ''}
-        ${hws.map((h) => `<div class="hw">${h.done ? '✓' : '•'} ${esc(h.text)}</div>`).join('')}
-      </button>`;
+        ${hws.filter((h) => h.text).map((h) => `<div class="hw">${h.done ? '✓' : '•'} ${esc(h.text)}</div>`).join('')}
+        ${st === 'waiting' ? `<div class="hw">можно делать с ${human(hws[0].assigned)}</div>` : ''}
+       </div>
+       <div class="quick">${QUICK.map(([k, title]) =>
+         `<button class="q q-${k} ${cur === k ? 'on' : ''}" title="${title}" aria-label="${title}"
+                  data-q="${k}" data-subj="${s.id}" data-date="${d}"></button>`).join('')}</div>
+      </div>`;
     }
     html += `</div>`;
   }
@@ -234,6 +252,32 @@ function renderSchedule(view) {
     render();
   });
   $$('[data-lesson]', view).forEach((b) => b.onclick = () => openLesson(b.dataset.lesson, b.dataset.date));
+  $$('[data-q]', view).forEach((b) => b.onclick = () => setOccurrence(b.dataset.subj, b.dataset.date, b.dataset.q));
+}
+
+const QUICK = [['none', 'Нет ДЗ'], ['active', 'Задано, надо сделать'], ['done', 'Сделано'], ['overdue', 'Не сделано / долг']];
+
+/* Быстрая отметка пары одним касанием.
+ * «Задано с» ставится автоматически — дата предыдущей пары этого предмета
+ * (пара в Пт → ДЗ можно делать с Пн, если до этого предмет был в Пн). */
+function setOccurrence(subjectId, date, mode) {
+  let list = state.homework.filter((h) => h.subjectId === subjectId && h.due === date);
+  if (mode === 'none') {
+    if (list.some((h) => h.text) && !confirm('Убрать ДЗ с этой пары? Текст задания удалится.')) return;
+    state.homework = state.homework.filter((h) => !list.includes(h));
+    return save();
+  }
+  if (!list.length) {
+    const assigned = prevLessonDate(subjectId, date) || (todayISO() < date ? todayISO() : date);
+    const h = { id: uid(), subjectId, text: '', assigned, due: date, done: false, doneAt: null, failed: false };
+    state.homework.push(h); list = [h];
+  }
+  for (const h of list) {
+    h.done = mode === 'done';
+    h.doneAt = h.done ? (h.doneAt || todayISO()) : null;
+    h.failed = mode === 'overdue';
+  }
+  save();
 }
 
 /* Окно пары: ДЗ, которое нужно сдать на ней, и ДЗ, заданное на ней */
@@ -243,6 +287,8 @@ function openLesson(lessonId, date) {
   const next = nextLessonDate(s.id, date);
   const dueHere = state.homework.filter((h) => h.subjectId === s.id && h.due === date);
   const givenHere = state.homework.filter((h) => h.subjectId === s.id && h.assigned === date && h.due !== date);
+  // пара отмечена кружком, но текста нет — по умолчанию дописываем текст именно к ней
+  const blank = dueHere.find((h) => !h.text);
 
   openModal(`
     <div class="modal-head"><span class="dot" style="--subj:${s.color}"></span>
@@ -255,15 +301,15 @@ function openLesson(lessonId, date) {
     <h3>Задали на этой паре</h3>
     ${givenHere.length ? givenHere.map(taskHTML).join('') : '<div class="muted">Пока ничего</div>'}
 
-    <h3>Добавить ДЗ</h3>
+    <h3>${blank ? 'Что задали к этой паре' : 'Добавить ДЗ'}</h3>
     <form id="hw-form">
       <label class="field">Что задали
         <textarea name="text" required placeholder="№ 12.3–12.7, прочитать §4…"></textarea></label>
       <div class="row">
         <label class="field">Задано (с какого дня можно делать)
-          <input type="date" name="assigned" value="${date}" required></label>
+          <input type="date" name="assigned" value="${blank ? blank.assigned : date}" required></label>
         <label class="field">Срок сдачи
-          <input type="date" name="due" value="${next || addDays(date, 7)}" required></label>
+          <input type="date" name="due" value="${blank ? date : next || addDays(date, 7)}" required></label>
       </div>
       <div class="row" style="margin-bottom:10px">
         ${next ? `<button type="button" class="btn small" data-due="${next}">К следующей паре (${humanFull(next)})</button>` : ''}
@@ -276,9 +322,8 @@ function openLesson(lessonId, date) {
       $$('[data-due]', root).forEach((b) => b.onclick = () => {
         const f = $('#hw-form', root);
         f.due.value = b.dataset.due;
-        // «к этой паре» значит задали раньше — делать можно уже с сегодняшнего дня
-        if (b.dataset.due === date) f.assigned.value = todayISO() < date ? todayISO() : date;
-        else f.assigned.value = date;
+        // задано — на предыдущей паре перед сроком
+        f.assigned.value = prevLessonDate(s.id, b.dataset.due) || date;
       });
       $('#hw-form', root).onsubmit = (e) => {
         e.preventDefault();
@@ -293,6 +338,9 @@ function addHomework(subjectId, text, assigned, due) {
   text = text.trim();
   if (!text) return false;
   if (assigned > due) { alert('Дата «задано» не может быть позже срока сдачи'); return false; }
+  // если пару уже отметили кружком (ДЗ без текста) — дописываем текст в него, а не создаём второе
+  const blank = state.homework.find((h) => h.subjectId === subjectId && h.due === due && !h.text);
+  if (blank) { blank.text = text; blank.assigned = assigned; return true; }
   state.homework.push({ id: uid(), subjectId, text, assigned, due, done: false, doneAt: null });
   return true;
 }
@@ -309,7 +357,7 @@ function taskHTML(h) {
   return `<div class="task st-${st}" style="--subj:${s ? s.color : 'gray'}">
     <input type="checkbox" data-toggle="${h.id}" ${h.done ? 'checked' : ''} ${st === 'waiting' ? 'disabled title="Ещё не задано"' : ''}>
     <div class="body">
-      <div class="text">${esc(h.text)}</div>
+      <div class="text">${h.text ? esc(h.text) : '<span class="muted">без описания</span>'}</div>
       <div class="meta"><b>${esc(s ? s.name : '?')}</b> · до ${humanFull(h.due)} · ${when}</div>
     </div>
     <button class="btn small" data-edit-hw="${h.id}" title="Изменить">✎</button>
@@ -321,7 +369,7 @@ function taskHTML(h) {
 function bindTaskEvents(root, rerender) {
   $$('[data-toggle]', root).forEach((c) => c.onchange = () => {
     const h = state.homework.find((x) => x.id === c.dataset.toggle);
-    h.done = c.checked; h.doneAt = c.checked ? todayISO() : null;
+    h.done = c.checked; h.doneAt = c.checked ? todayISO() : null; h.failed = false;
     save(); rerender && rerender();
   });
   $$('[data-del-hw]', root).forEach((b) => b.onclick = () => {
@@ -376,8 +424,12 @@ function openHomeworkForm(hwId, presetSubject) {
       const f = $('#f', root);
       $('[data-close]', root).onclick = closeModal;
       const setNext = () => {
-        const d = nextLessonDate(f.subject.value, f.assigned.value || todayISO());
-        if (d) { f.due.value = d; $('#next-hint', root).textContent = humanFull(d); }
+        const d = nextLessonDate(f.subject.value, todayISO());
+        if (d) {
+          f.due.value = d;
+          f.assigned.value = prevLessonDate(f.subject.value, d) || todayISO();
+          $('#next-hint', root).textContent = humanFull(d);
+        }
         else $('#next-hint', root).textContent = 'у предмета нет пар в расписании';
       };
       $('[data-next]', root).onclick = setNext;

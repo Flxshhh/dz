@@ -13,6 +13,9 @@
   --active-bg: #fff4c2;   --active-fg: #8a6500;    /* можно делать, не сделано */
   --done-bg: #d6f5df;     --done-fg: #1d7a3a;      /* сделано */
   --overdue-bg: #fde0e0;  --overdue-fg: #b42323;   /* просрочено */
+
+  /* сплошные цвета кружков */
+  --q-none: #c4c8d0; --q-active: #facc15; --q-done: #22c55e; --q-overdue: #ef4444;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -102,16 +105,31 @@ label.field > * { color: var(--text); }
 .day.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .day-head { font-weight: 600; font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between; }
 .lesson {
-  display: block; width: 100%; text-align: left; cursor: pointer;
-  border: 1px solid var(--border); border-left: 4px solid var(--subj, var(--accent));
-  background: var(--card); border-radius: 8px; padding: 6px 8px; margin-bottom: 6px;
+  border-left: 4px solid var(--subj, var(--accent));
+  border-radius: 8px; padding: 6px 8px; margin-bottom: 6px;
 }
-.lesson.st-waiting, .lesson.st-active, .lesson.st-done, .lesson.st-overdue { border-color: transparent; border-left-color: var(--subj); }
+/* по умолчанию (ДЗ нет) — серый */
+.st-none { background: var(--waiting-bg); color: var(--waiting-fg); }
+.lesson.st-none .name { color: var(--text); }
+.lesson-main { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* кружки быстрой отметки */
+.quick { display: flex; gap: 8px; margin-top: 6px; }
+.q {
+  width: 26px; height: 26px; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 2px solid rgba(0,0,0,.12); flex: none; position: relative;
+}
+.q::before { content: ""; position: absolute; inset: -6px; } /* увеличенная зона касания */
+.q-none    { background: var(--q-none); }
+.q-active  { background: var(--q-active); }
+.q-done    { background: var(--q-done); }
+.q-overdue { background: var(--q-overdue); }
+.q.on { border-color: var(--text); box-shadow: 0 0 0 2px var(--card); transform: scale(1.12); }
+@media (max-width: 900px) { .q { width: 32px; height: 32px; } .quick { gap: 12px; } }
 .lesson .time { font-size: 12px; opacity: .8; }
 .lesson .name { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; hyphens: auto; }
 .lesson .meta { font-size: 12px; opacity: .8; }
 .lesson .hw { font-size: 12px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.lesson.past { opacity: .6; }
 
 @media (max-width: 900px) {
   .week { grid-template-columns: 1fr; }
