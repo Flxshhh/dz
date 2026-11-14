@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wirken</title>
+  <meta name="theme-color" content="#09090b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Фон: сетка + световое пятно, которое следует за курсором -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-spot" aria-hidden="true"></div>
+
+  <!-- ===== Навигация (стеклянная, прилипает сверху) ===== -->
+  <header class="nav">
+    <a href="#" class="logo">
+      <span class="logo-mark">W</span> wirken
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Возможности</a>
+      <a href="#work">Работы</a>
+      <a href="#process">Процесс</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <button class="cmdk" id="cmdk-open" aria-label="Поиск">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span>Поиск…</span>
+      <kbd>⌘K</kbd>
+    </button>
+    <a href="#contact" class="btn btn-light btn-sm">Начать</a>
+  </header>
+
+  <main>
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <a href="#features" class="pill reveal">
+        <span class="pill-dot"></span> Новое: TODO — анонс
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+
+      <h1 class="hero-title">
+        <span class="word">Идеи,</span>
+        <span class="word">которые</span>
+        <span class="word gradient-text">работают</span>
+      </h1>
+
+      <p class="hero-sub reveal">
+        TODO: краткое описание того, чем занимается Wirken. Одно-два предложения
+        о главной ценности для клиента.
+      </p>
+
+      <div class="hero-cta reveal">
+        <a href="#contact" class="btn btn-light magnetic">Связаться
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#work" class="btn btn-ghost">Смотреть работы</a>
+      </div>
+
+      <!-- «Окно» с превью, как у 21st.dev: рамка с бегущим лучом -->
+      <div class="hero-preview reveal">
+        <div class="beam-border">
+          <div class="window">
+            <div class="window-bar">
+              <i></i><i></i><i></i>
+              <span class="window-url">wirken.com</span>
+            </div>
+            <div class="window-body">
+              <div class="code" id="typed"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Бегущая строка с логотипами клиентов ===== -->
+    <section class="marquee-wrap" aria-label="Клиенты">
+      <p class="muted center small">Нам доверяют</p>
+      <div class="marquee">
+        <div class="marquee-track">
+          <span>Client A</span><span>Client B</span><span>Client C</span><span>Client D</span>
+          <span>Client E</span><span>Client F</span><span>Client G</span><span>Client H</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Bento-сетка возможностей ===== -->
+    <section id="features" class="section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Возможности</span>
+        <h2>Всё, что нужно — <span class="gradient-text">в одном месте</span></h2>
+        <p class="muted">TODO: подзаголовок раздела.</p>
+      </div>
+
+      <div class="bento">
+        <article class="card spotlight span-2 reveal">
+          <div class="card-icon">◆</div>
+          <h3>Услуга 1</h3>
+          <p class="muted">TODO: описание первой ключевой услуги.</p>
+          <div class="bars" aria-hidden="true">
+            <i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:55%"></i><i style="--h:90%"></i><i style="--h:65%"></i><i style="--h:80%"></i><i style="--h:100%"></i>
+          </div>
+        </article>
+        <article class="card spotlight reveal">
+          <div class="card-icon">◎</div>
+          <h3>Услуга 2</h3>
+          <p class="muted">TODO: описание.</p>
+          <div class="orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+        </article>
+        <article class="card spotlight reveal">
+          <div class="card-icon">✦</div>
+          <h3>Услуга 3</h3>
+          <p class="muted">TODO: описание.</p>
+          <div class="stat"><span class="count" data-to="120">0</span>+<small>проектов</small></div>
+        </article>
+        <article class="card spotlight span-2 reveal">
+          <div class="card-icon">⌘</div>
+          <h3>Услуга 4</h3>
+          <p class="muted">TODO: описание.</p>
+          <div class="chips" aria-hidden="true">
+            <span>Стратегия</span><span>Дизайн</span><span>Разработка</span><span>Маркетинг</span><span>Аналитика</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Работы: карточки с 3D-наклоном ===== -->
+    <section id="work" class="section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Работы</span>
+        <h2>Избранные проекты</h2>
+      </div>
+      <div class="grid-3">
+        <a class="work tilt reveal" href="#"><div class="work-img g1"></div><div class="work-meta"><b>Проект 1</b><span class="muted">Категория</span></div></a>
+        <a class="work tilt reveal" href="#"><div class="work-img g2"></div><div class="work-meta"><b>Проект 2</b><span class="muted">Категория</span></div></a>
+        <a class="work tilt reveal" href="#"><div class="work-img g3"></div><div class="work-meta"><b>Проект 3</b><span class="muted">Категория</span></div></a>
+      </div>
+    </section>
+
+    <!-- ===== Процесс: шаги с линией прогресса ===== -->
+    <section id="process" class="section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Процесс</span>
+        <h2>Как мы работаем</h2>
+      </div>
+      <ol class="steps">
+        <li class="reveal"><span class="step-n">01</span><div><h3>Знакомство</h3><p class="muted">TODO</p></div></li>
+        <li class="reveal"><span class="step-n">02</span><div><h3>Концепция</h3><p class="muted">TODO</p></div></li>
+        <li class="reveal"><span class="step-n">03</span><div><h3>Реализация</h3><p class="muted">TODO</p></div></li>
+        <li class="reveal"><span class="step-n">04</span><div><h3>Запуск</h3><p class="muted">TODO</p></div></li>
+      </ol>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section id="contact" class="section">
+      <div class="cta reveal">
+        <div class="cta-glow" aria-hidden="true"></div>
+        <h2>Готовы начать?</h2>
+        <p class="muted">TODO: призыв к действию.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Отправлено ✓'">
+          <input type="email" placeholder="you@example.com" required>
+          <button class="btn btn-light" type="submit">Отправить</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="muted small">© <span id="year"></span> Wirken</span>
+    <span class="muted small">TODO: адрес · телефон · e-mail</span>
+  </footer>
+
+  <!-- ===== Командная палитра ⌘K ===== -->
+  <div class="palette" id="palette" hidden>
+    <div class="palette-box">
+      <input id="palette-input" placeholder="Куда перейти?" autocomplete="off">
+      <ul id="palette-list">
+        <li data-href="#features">Возможности</li>
+        <li data-href="#work">Работы</li>
+        <li data-href="#process">Процесс</li>
+        <li data-href="#contact">Контакты</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
