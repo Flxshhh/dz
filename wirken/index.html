@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wirken</title>
+  <title>Wirken — гибка металла</title>
   <meta name="theme-color" content="#09090b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,9 +20,9 @@
       <span class="logo-mark">W</span> wirken
     </a>
     <nav class="nav-links">
-      <a href="#features">Возможности</a>
-      <a href="#work">Работы</a>
-      <a href="#process">Процесс</a>
+      <a href="#features">Услуги</a>
+      <a href="#work">Изделия</a>
+      <a href="#process">Как заказать</a>
       <a href="#contact">Контакты</a>
     </nav>
     <button class="cmdk" id="cmdk-open" aria-label="Поиск">
@@ -30,33 +30,33 @@
       <span>Поиск…</span>
       <kbd>⌘K</kbd>
     </button>
-    <a href="#contact" class="btn btn-light btn-sm">Начать</a>
+    <a href="#contact" class="btn btn-light btn-sm">Заказать</a>
   </header>
 
   <main>
     <!-- ===== Hero ===== -->
     <section class="hero">
       <a href="#features" class="pill reveal">
-        <span class="pill-dot"></span> Новое: TODO — анонс
+        <span class="pill-dot"></span> Принимаем заказы — расчёт по чертежу
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
       </a>
 
       <h1 class="hero-title">
-        <span class="word">Идеи,</span>
-        <span class="word">которые</span>
-        <span class="word gradient-text">работают</span>
+        <span class="word">Металл</span>
+        <span class="word">точно</span>
+        <span class="word gradient-text">по чертежу</span>
       </h1>
 
       <p class="hero-sub reveal">
-        TODO: краткое описание того, чем занимается Wirken. Одно-два предложения
-        о главной ценности для клиента.
+        Гибка и обработка листового металла: от единичных деталей до серий.
+        Пришлите чертёж — рассчитаем стоимость и сроки.
       </p>
 
       <div class="hero-cta reveal">
-        <a href="#contact" class="btn btn-light magnetic">Связаться
+        <a href="#contact" class="btn btn-light magnetic">Рассчитать заказ
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="#work" class="btn btn-ghost">Смотреть работы</a>
+        <a href="#work" class="btn btn-ghost">Наши изделия</a>
       </div>
 
       <!-- «Окно» с превью, как у 21st.dev: рамка с бегущим лучом -->
@@ -65,7 +65,7 @@
           <div class="window">
             <div class="window-bar">
               <i></i><i></i><i></i>
-              <span class="window-url">wirken.com</span>
+              <span class="window-url">wirkenrus.com / заказ</span>
             </div>
             <div class="window-body">
               <div class="code" id="typed"></div>
@@ -77,11 +77,11 @@
 
     <!-- ===== Бегущая строка с логотипами клиентов ===== -->
     <section class="marquee-wrap" aria-label="Клиенты">
-      <p class="muted center small">Нам доверяют</p>
+      <p class="muted center small">Работаем с материалами</p>
       <div class="marquee">
         <div class="marquee-track">
-          <span>Client A</span><span>Client B</span><span>Client C</span><span>Client D</span>
-          <span>Client E</span><span>Client F</span><span>Client G</span><span>Client H</span>
+          <span>Сталь</span><span>Нержавейка</span><span>Оцинковка</span><span>Алюминий</span>
+          <span>Медь</span><span>Латунь</span><span>Перфолист</span><span>Рифлёный лист</span>
         </div>
       </div>
     </section>
@@ -89,38 +89,36 @@
     <!-- ===== Bento-сетка возможностей ===== -->
     <section id="features" class="section">
       <div class="section-head reveal">
-        <span class="eyebrow">Возможности</span>
-        <h2>Всё, что нужно — <span class="gradient-text">в одном месте</span></h2>
-        <p class="muted">TODO: подзаголовок раздела.</p>
+        <span class="eyebrow">Услуги</span>
+        <h2>Полный цикл — <span class="gradient-text">в одном цеху</span></h2>
+        <p class="muted">От раскроя листа до готового изделия. <!-- TODO: сверить список услуг с реальным --></p>
       </div>
 
       <div class="bento">
         <article class="card spotlight span-2 reveal">
           <div class="card-icon">◆</div>
-          <h3>Услуга 1</h3>
-          <p class="muted">TODO: описание первой ключевой услуги.</p>
-          <div class="bars" aria-hidden="true">
-            <i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:55%"></i><i style="--h:90%"></i><i style="--h:65%"></i><i style="--h:80%"></i><i style="--h:100%"></i>
-          </div>
+          <h3>Гибка листового металла</h3>
+          <p class="muted">Гибка на листогибочном прессе: уголки, швеллеры, короба, сложный профиль. <!-- TODO: толщины, длина гиба --></p>
+          <svg class="bend" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 80 H95"/><path class="flap" d="M95 80 H190"/></svg>
         </article>
         <article class="card spotlight reveal">
           <div class="card-icon">◎</div>
-          <h3>Услуга 2</h3>
-          <p class="muted">TODO: описание.</p>
+          <h3>Резка</h3>
+          <p class="muted">Раскрой листа под гибку. <!-- TODO: лазер/плазма/гильотина? --></p>
           <div class="orbit" aria-hidden="true"><span></span><span></span><span></span></div>
         </article>
         <article class="card spotlight reveal">
           <div class="card-icon">✦</div>
-          <h3>Услуга 3</h3>
-          <p class="muted">TODO: описание.</p>
-          <div class="stat"><span class="count" data-to="120">0</span>+<small>проектов</small></div>
+          <h3>Сварка и сборка</h3>
+          <p class="muted">Соединяем детали в готовые узлы. <!-- TODO --></p>
+          <div class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </article>
         <article class="card spotlight span-2 reveal">
           <div class="card-icon">⌘</div>
-          <h3>Услуга 4</h3>
-          <p class="muted">TODO: описание.</p>
+          <h3>Изделия под ключ</h3>
+          <p class="muted">Изготовим по вашему чертежу или эскизу, при необходимости — с покраской.</p>
           <div class="chips" aria-hidden="true">
-            <span>Стратегия</span><span>Дизайн</span><span>Разработка</span><span>Маркетинг</span><span>Аналитика</span>
+            <span>Короба и корпуса</span><span>Кронштейны</span><span>Отливы и откосы</span><span>Профиль</span><span>Детали по чертежу</span>
           </div>
         </article>
       </div>
@@ -129,13 +127,13 @@
     <!-- ===== Работы: карточки с 3D-наклоном ===== -->
     <section id="work" class="section">
       <div class="section-head reveal">
-        <span class="eyebrow">Работы</span>
-        <h2>Избранные проекты</h2>
+        <span class="eyebrow">Изделия</span>
+        <h2>Что мы делаем <!-- TODO: заменить градиенты фото --></h2>
       </div>
       <div class="grid-3">
-        <a class="work tilt reveal" href="#"><div class="work-img g1"></div><div class="work-meta"><b>Проект 1</b><span class="muted">Категория</span></div></a>
-        <a class="work tilt reveal" href="#"><div class="work-img g2"></div><div class="work-meta"><b>Проект 2</b><span class="muted">Категория</span></div></a>
-        <a class="work tilt reveal" href="#"><div class="work-img g3"></div><div class="work-meta"><b>Проект 3</b><span class="muted">Категория</span></div></a>
+        <a class="work tilt reveal" href="#"><div class="work-img g1"></div><div class="work-meta"><b>Корпуса</b><span class="muted">TODO</span></div></a>
+        <a class="work tilt reveal" href="#"><div class="work-img g2"></div><div class="work-meta"><b>Кронштейны</b><span class="muted">TODO</span></div></a>
+        <a class="work tilt reveal" href="#"><div class="work-img g3"></div><div class="work-meta"><b>Доборные элементы</b><span class="muted">TODO</span></div></a>
       </div>
     </section>
 
@@ -143,13 +141,13 @@
     <section id="process" class="section">
       <div class="section-head reveal">
         <span class="eyebrow">Процесс</span>
-        <h2>Как мы работаем</h2>
+        <h2>Как оформить заказ</h2>
       </div>
       <ol class="steps">
-        <li class="reveal"><span class="step-n">01</span><div><h3>Знакомство</h3><p class="muted">TODO</p></div></li>
-        <li class="reveal"><span class="step-n">02</span><div><h3>Концепция</h3><p class="muted">TODO</p></div></li>
-        <li class="reveal"><span class="step-n">03</span><div><h3>Реализация</h3><p class="muted">TODO</p></div></li>
-        <li class="reveal"><span class="step-n">04</span><div><h3>Запуск</h3><p class="muted">TODO</p></div></li>
+        <li class="reveal"><span class="step-n">01</span><div><h3>Заявка</h3><p class="muted">Присылаете чертёж, эскиз или размеры.</p></div></li>
+        <li class="reveal"><span class="step-n">02</span><div><h3>Расчёт</h3><p class="muted">Считаем стоимость и срок, согласуем детали.</p></div></li>
+        <li class="reveal"><span class="step-n">03</span><div><h3>Производство</h3><p class="muted">Режем, гнём, при необходимости свариваем и красим.</p></div></li>
+        <li class="reveal"><span class="step-n">04</span><div><h3>Выдача</h3><p class="muted">Самовывоз или доставка. <!-- TODO: условия доставки --></p></div></li>
       </ol>
     </section>
 
@@ -157,10 +155,10 @@
     <section id="contact" class="section">
       <div class="cta reveal">
         <div class="cta-glow" aria-hidden="true"></div>
-        <h2>Готовы начать?</h2>
-        <p class="muted">TODO: призыв к действию.</p>
+        <h2>Нужен расчёт?</h2>
+        <p class="muted">Оставьте контакт — перезвоним и посчитаем заказ.</p>
         <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Отправлено ✓'">
-          <input type="email" placeholder="you@example.com" required>
+          <input type="tel" placeholder="+7 (___) ___-__-__" required>
           <button class="btn btn-light" type="submit">Отправить</button>
         </form>
       </div>
@@ -177,8 +175,8 @@
     <div class="palette-box">
       <input id="palette-input" placeholder="Куда перейти?" autocomplete="off">
       <ul id="palette-list">
-        <li data-href="#features">Возможности</li>
-        <li data-href="#work">Работы</li>
+        <li data-href="#features">Услуги</li>
+        <li data-href="#work">Изделия</li>
         <li data-href="#process">Процесс</li>
         <li data-href="#contact">Контакты</li>
       </ul>

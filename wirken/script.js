@@ -33,7 +33,6 @@ $$('.reveal').forEach((el, i) => {
   el.style.transitionDelay = (i % 4) * 60 + 'ms'; // лёгкий «каскад»
   io.observe(el);
 });
-$$('.bars i').forEach((b, i) => b.style.setProperty('--i', i));
 
 // Счётчик 0 → N с замедлением в конце (easeOutCubic)
 function countUp(el) {
@@ -70,12 +69,12 @@ $$('.magnetic').forEach(btn => {
 
 // 6. Печатающийся код в окне hero
 const lines = [
-  ['c', '// TODO: заменить на что-то о Wirken'],
-  ['k', 'const '], ['', 'wirken = {\n'],
-  ['', '  идея: '], ['s', '"ваша задача"'], ['', ',\n'],
-  ['', '  подход: '], ['s', '"дизайн + технологии"'], ['', ',\n'],
-  ['', '  результат: '], ['s', '"работает"'], ['', '\n};\n\n'],
-  ['k', 'await '], ['', 'wirken.'], ['k', 'start'], ['', '();'],
+  ['c', '// заявка на гибку — пример\n'],
+  ['k', 'материал'], ['', ':   '], ['s', 'сталь, лист 2 мм'], ['', '\n'],
+  ['k', 'операции'], ['', ':   '], ['s', 'резка → гибка → покраска'], ['', '\n'],
+  ['k', 'угол гиба'], ['', ':  '], ['s', '90°'], ['', '\n'],
+  ['k', 'тираж'], ['', ':      '], ['s', '50 шт'], ['', '\n\n'],
+  ['k', '✓ '], ['', 'чертёж принят, считаем стоимость…'],
 ];
 (function typeCode() {
   const box = $('#typed');
@@ -86,7 +85,7 @@ const lines = [
     const [cls, text] = lines[li];
     if (ci === 0) { span = document.createElement('span'); span.className = cls; box.append(span); }
     span.textContent += text[ci++];
-    if (ci >= text.length) { li++; ci = 0; if (cls === 'c') box.append('\n'); }
+    if (ci >= text.length) { li++; ci = 0; }
     setTimeout(tick, 18 + Math.random() * 40);
   };
   setTimeout(tick, 900);
