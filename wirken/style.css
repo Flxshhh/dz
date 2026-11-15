@@ -243,3 +243,82 @@ h3 { font-size: 20px; letter-spacing: -.01em; }
   .hero .dim { opacity: 1; }
   html { scroll-behavior: auto; }
 }
+
+/* ==========================================================
+   Подразделы (генерируются build.py)
+   ========================================================== */
+.menu a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.burger-menu a[aria-current="page"] { background: var(--raised); }
+
+/* Навигационная цепочка */
+.crumbs { padding-top: 32px; font-size: 14px; color: var(--ink-3); }
+.crumbs a { color: var(--ink-2); text-decoration: none; }
+.crumbs a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 4px; }
+.crumbs span[aria-hidden] { margin: 0 4px; }
+
+/* Шапка раздела: текст слева, чертёж справа */
+.page-head { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: center; padding-top: 32px; }
+.page-head--text { grid-template-columns: 1fr; }
+.page-head h1 { font-size: clamp(32px, 4vw, 48px); max-width: 20ch; }
+.page-head .lead { max-width: 40rem; }
+.page-drawing { background: var(--white); border: 1px solid var(--rule); border-radius: 16px; padding: 32px; display: grid; place-items: center; }
+.page-drawing .mini { width: 100%; max-width: 280px; height: auto; }
+.page-drawing .mini * { animation-play-state: running; } /* в шапке раздела чертёж — главный момент, играет сам */
+
+/* Характеристики */
+.specs { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.specs div { padding: 16px 24px 16px 0; }
+.specs div + div { padding-left: 24px; border-left: 1px solid var(--rule); }
+.specs dt { font-size: 14px; color: var(--ink-3); }
+.specs dd { margin-top: 4px; font: 500 24px/1.2 var(--sans); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+
+/* Строки без чертежа */
+.row--plain { grid-template-columns: minmax(200px, 320px) 1fr auto; }
+.row--plain .row-name { font-size: 20px; }
+.row--plain .row-link { justify-self: end; }
+.ext-note { margin-top: 12px; font-size: 14px; color: var(--ink-3); }
+.block--tight { padding-top: 48px; }
+
+/* Список с фирменной полоской */
+.ticks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px 48px; }
+.ticks li { position: relative; padding-left: 24px; color: var(--ink-2); max-width: 52ch; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: .8em; width: 12px; height: 3px; border-radius: 2px; background: var(--teal); }
+.ticks b { display: block; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.ticks--simple { grid-template-columns: 1fr; gap: 8px; }
+.note { margin-top: 32px; max-width: 68ch; color: var(--ink-2); padding-left: 16px; border-left: 2px solid var(--rule); }
+
+/* Ключевое число */
+.callout { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; padding: 24px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.callout b { font: 500 clamp(40px, 5vw, 56px)/1 var(--mono); letter-spacing: -.02em; color: var(--blue); font-variant-numeric: tabular-nums; }
+.callout p { max-width: 46ch; color: var(--ink-2); }
+
+/* Текст */
+.prose { max-width: 68ch; }
+.prose h3 { margin: 40px 0 12px; }
+.prose h3:first-child { margin-top: 0; }
+.prose p { color: var(--ink-2); margin-bottom: 12px; }
+
+/* Новости: описание под заголовком */
+.news li div p { margin-top: 4px; font-size: 15px; color: var(--ink-2); max-width: 70ch; }
+
+/* Контакты */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-bottom: 96px; }
+.contact-grid h2 { margin-bottom: 16px; }
+address { font-style: normal; color: var(--ink-2); line-height: 1.7; }
+.muted-p { color: var(--ink-2); max-width: 46ch; }
+.muted-p a { color: var(--blue); text-underline-offset: 4px; }
+
+@media (max-width: 980px) {
+  .page-head { grid-template-columns: 1fr; gap: 32px; padding-top: 24px; }
+  .page-drawing { max-width: 420px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 720px) {
+  .row--plain { grid-template-columns: 1fr auto; gap: 4px 16px; }
+  .row--plain .row-name { font-size: 18px; grid-column: 1; }
+  .row--plain .row-desc { grid-column: 1; grid-row: 2; }
+  .row--plain .row-link { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .specs div, .specs div + div { padding: 12px 0; border-left: 0; }
+  .specs div + div { border-top: 1px solid var(--rule); }
+  .callout { grid-template-columns: 1fr; gap: 12px; }
+}

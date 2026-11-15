@@ -16,7 +16,7 @@ toTop.addEventListener('click', () => scrollTo({ top: 0 }));
 
 // Анимация гиба в первом экране ставится на паузу, когда экран прокручен
 const hero = $('.hero');
-new IntersectionObserver(([e]) => hero.classList.toggle('paused', !e.isIntersecting)).observe(hero);
+if (hero) new IntersectionObserver(([e]) => hero.classList.toggle('paused', !e.isIntersecting)).observe(hero);
 
 // Мобильное меню закрывается после выбора пункта
 const burger = $('.burger');
