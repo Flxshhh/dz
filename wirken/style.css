@@ -1,62 +1,73 @@
 /* ==========================================================
    Wirken — лист технического каталога.
-   Палитра из фирменных цветов: холодная бумага, синий логотипа,
-   серый металл, бирюзовый — только для листа металла и фокуса.
+   Направление (по unslop by @heydamir, CC BY 4.0):
+   характер — точный, инженерный, спокойный; мир — чертёж и цех;
+   моменты — чертежи инструмента; фирменная деталь — бирюзовая
+   полоска «листа металла» (в чертежах и как маркер списков).
+   Хром тихий: нейтральная шкала, один акцент — синий логотипа.
    ========================================================== */
 :root {
-  --paper: #f2f4f6;     /* холодный светло-серый фон, как у оригинала */
-  --white: #ffffff;
-  --ink: #15212d;       /* основной текст */
-  --ink-2: #4a5866;     /* второстепенный текст */
-  --blue: #0b4a8b;      /* синий логотипа: линии чертежей, ссылки */
-  --blue-2: #0a3a6d;
-  --steel: #8b98a5;     /* серый металл: штриховка, тонкие линии */
-  --rule: #d5dbe1;      /* разделители */
-  --teal: #2aa3c4;      /* бирюзовый: лист металла, фокус */
+  /* нейтральная шкала, чуть тонированная в холодный (мир чертежа) */
+  --paper: #f3f5f7;     /* фон страницы */
+  --white: #ffffff;     /* поверхности */
+  --raised: #eaeef2;    /* приподнятая поверхность, ховер */
+  --ink: #142130;       /* основной текст */
+  --ink-2: #4a5768;     /* второстепенный текст */
+  --ink-3: #6b7685;     /* приглушённый: даты, подписи */
+  --rule: rgba(20, 33, 48, .1);  /* разделители — текст на 10% */
 
-  --cond: "PT Sans Narrow", "Arial Narrow", sans-serif; /* российская гарнитура ParaType, узкая — как Bebas у оригинала */
+  --blue: #0b4a8b;      /* единственный акцент: основная кнопка, ссылки, линии чертежей */
+  --blue-2: #093c71;
+  --steel: #8b98a5;     /* штриховка и тонкие линии чертежей */
+  --teal: #2aa3c4;      /* только лист металла — фирменная деталь */
+
   --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --ease: cubic-bezier(.22, 1, .36, 1);   /* одна кривая на всё */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
 ul { list-style: none; }
 
-:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
 
 .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
-h1, h2, h3 { font-family: var(--cond); font-weight: 700; line-height: 1.08; letter-spacing: -.005em; }
-h1 { font-size: clamp(36px, 5vw, 58px); }
-h2 { font-size: clamp(30px, 3.6vw, 42px); margin-bottom: 28px; }
-h3 { font-size: 22px; line-height: 1.2; }
+/* Иерархия — размером и цветом, веса только 400 и 500 */
+h1, h2, h3 { font-weight: 500; line-height: 1.1; }
+h1 { font-size: clamp(36px, 4.4vw, 56px); line-height: 1.06; letter-spacing: -.03em; }
+h2 { font-size: clamp(28px, 3vw, 36px); letter-spacing: -.02em; margin-bottom: 32px; }
+h3 { font-size: 20px; letter-spacing: -.01em; }
 
 /* ---------- Шапка ---------- */
-.top { position: sticky; top: 0; z-index: 30; background: rgba(242, 244, 246, .94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
-.top-in { display: flex; align-items: center; gap: 32px; height: 68px; }
+.top { position: sticky; top: 0; z-index: 30; background: rgba(243, 245, 247, .94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+.top-in { display: flex; align-items: center; gap: 32px; height: 64px; }
 .logo img { width: 156px; }
-.menu { display: flex; gap: 26px; margin-left: auto; font-size: 15px; }
-.menu a { text-decoration: none; color: var(--ink-2); padding: 4px 0; border-bottom: 2px solid transparent; transition: color .15s, border-color .15s; }
-.menu a:hover { color: var(--blue); border-bottom-color: var(--blue); }
-.top-phone { font: 700 18px var(--cond); color: var(--blue); text-decoration: none; white-space: nowrap; }
+.menu { display: flex; gap: 24px; margin-left: auto; font-size: 15px; }
+.menu a { text-decoration: none; color: var(--ink-2); padding: 4px 0; border-bottom: 1px solid transparent; transition: color 150ms var(--ease), border-color 150ms var(--ease); }
+.menu a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.top-phone { font: 500 16px var(--sans); color: var(--ink); text-decoration: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.top-phone:hover { color: var(--blue); }
 .burger { display: none; }
 
-/* ---------- Кнопки ---------- */
-.btn { display: inline-block; padding: 13px 22px; border-radius: 6px; font: 500 16px var(--sans); text-decoration: none; transition: background .15s, color .15s, border-color .15s; }
+/* ---------- Кнопки: 48px, радиус 8 ---------- */
+.btn { display: inline-block; padding: 12px 20px; line-height: 24px; border-radius: 8px; font: 500 16px/24px var(--sans); text-decoration: none; font-variant-numeric: tabular-nums; transition: background-color 150ms var(--ease), color 150ms var(--ease), border-color 150ms var(--ease), transform 150ms var(--ease); }
+.btn:active { transform: scale(.98); }
 .btn-primary { background: var(--blue); color: #fff; }
 .btn-primary:hover { background: var(--blue-2); }
-.btn-line { border: 1.5px solid var(--blue); color: var(--blue); }
-.btn-line:hover { background: var(--blue); color: #fff; }
+.btn-line { background: var(--white); border: 1px solid var(--rule); padding: 11px 19px; color: var(--ink); }
+.btn-line:hover { border-color: rgba(20, 33, 48, .28); }
 
-/* ---------- Первый экран ---------- */
-.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding-top: 64px; padding-bottom: 72px; }
-.hero h1 { max-width: 15ch; }
-.lead { margin-top: 22px; max-width: 46ch; font-size: 19px; color: var(--ink-2); }
-.actions { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-drawing { background: var(--white); border: 1px solid var(--rule); border-radius: 4px; padding: 12px; }
+/* ---------- Первый экран: занимает окно целиком, текст по центру против чертежа ---------- */
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; min-height: calc(100svh - 64px); padding-top: 48px; padding-bottom: 48px; }
+.hero h1 { max-width: 17ch; }
+.lead { margin-top: 24px; max-width: 36rem; font-size: 18px; line-height: 28px; color: var(--ink-2); }
+.actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-drawing { background: var(--white); border: 1px solid var(--rule); border-radius: 16px; padding: 16px; box-shadow: 0 8px 24px rgba(20, 33, 48, .06); }
 .drawing { display: block; width: 100%; height: auto; }
 
 /* ---------- Чертёжные стили (общие для всех SVG) ---------- */
@@ -66,160 +77,163 @@ h3 { font-size: 22px; line-height: 1.2; }
 .axis { stroke: var(--steel); stroke-width: 1; stroke-dasharray: 18 4 3 4; } /* штрихпунктир */
 .hatch-line { stroke: var(--steel); stroke-width: 1; opacity: .7; }
 .arr-head { fill: var(--steel); }
-.drawing text { font: 400 16px var(--cond); fill: var(--ink-2); }
+.drawing text { font: 400 14px var(--mono); fill: var(--ink-2); }
 .sheet-l, .sheet-r { stroke: var(--teal); stroke-width: 5; stroke-linecap: round; }
 
 /* ---------- Анимация первого экрана ----------
-   1) контуры прорисовываются (stroke-dashoffset 1 → 0, pathLength="1")
-   2) затем цикл гиба 4с: пуансон вниз, половины листа поворачиваются на 45°,
-      вместе получается угол 90°; выноска «90°» видна, пока лист согнут */
-.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s cubic-bezier(.5, 0, .2, 1) forwards; }
+   1) контуры прорисовываются (stroke-dashoffset 1 → 0 при pathLength="1")
+   2) цикл гиба 4с: пуансон вниз, половины листа поворачиваются на 45°,
+      вместе получается 90°; выноска «90°» видна, пока лист согнут */
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s var(--ease) forwards; }
 .hero .punch .draw { animation-delay: .3s; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 .hero .sheet-l, .hero .sheet-r { transform-box: view-box; transform-origin: 240px 265px; }
-.hero :is(.punch, .sheet, .sheet-l, .sheet-r, .angle) { animation-duration: 4s; animation-iteration-count: infinite; animation-timing-function: cubic-bezier(.55, 0, .25, 1); animation-delay: 1.6s; animation-fill-mode: both; }
+.hero :is(.punch, .sheet, .sheet-l, .sheet-r, .angle) { animation-duration: 4s; animation-iteration-count: infinite; animation-timing-function: var(--ease); animation-delay: 1.6s; animation-fill-mode: both; }
 .hero .punch { animation-name: punch; }
 .hero .sheet { animation-name: sheet; }
 .hero .sheet-l { animation-name: bend-l; }
 .hero .sheet-r { animation-name: bend-r; }
 .hero .angle { animation-name: angle; }
-.hero .dim { opacity: 0; animation: fade .6s 1.2s forwards; }
+.hero .dim { opacity: 0; animation: fade .4s var(--ease) 1.2s forwards; }
 @keyframes punch  { 0%, 10% { transform: translateY(-30px); } 40%, 70% { transform: translateY(38px); } 95%, 100% { transform: translateY(-30px); } }
 @keyframes sheet  { 0%, 22% { transform: none; } 40%, 70% { transform: translateY(36px); } 92%, 100% { transform: none; } }
 @keyframes bend-l { 0%, 22% { transform: none; } 40%, 70% { transform: rotate(45deg); } 92%, 100% { transform: none; } }
 @keyframes bend-r { 0%, 22% { transform: none; } 40%, 70% { transform: rotate(-45deg); } 92%, 100% { transform: none; } }
 @keyframes angle  { 0%, 40% { opacity: 0; } 46%, 66% { opacity: 1; } 72%, 100% { opacity: 0; } }
 @keyframes fade { to { opacity: 1; } }
-.hero.paused * { animation-play-state: paused !important; } /* не тратим ресурсы, когда экран не виден */
+.hero.paused * { animation-play-state: paused !important; } /* вне экрана — пауза */
 
 /* ---------- Блоки ---------- */
-.block { padding-top: 88px; }
+.block { padding-top: 96px; }
 
 /* ---------- Каталог: строки с чертежами ---------- */
 .catalog { border-top: 1px solid var(--rule); }
 .catalog li { border-bottom: 1px solid var(--rule); }
-.row { display: grid; grid-template-columns: 120px 220px 1fr auto; gap: 28px; align-items: center; padding: 18px 8px; text-decoration: none; transition: background .2s; }
+.row { display: grid; grid-template-columns: 120px 200px 1fr auto; gap: 24px; align-items: center; padding: 16px 8px; text-decoration: none; transition: background-color 150ms var(--ease); }
 .row:hover, .row:focus-visible { background: var(--white); }
 .mini { width: 120px; height: 90px; overflow: visible; }
 .mini .sheet-l, .mini .sheet-r { stroke-width: 3.5; }
-.row-name { font: 700 28px/1.1 var(--cond); color: var(--blue); }
+.row-name { font: 500 24px/1.2 var(--sans); letter-spacing: -.02em; color: var(--ink); }
 .row-desc { color: var(--ink-2); max-width: 46ch; }
 .row-link { font-size: 15px; font-weight: 500; color: var(--blue); border-bottom: 1px solid currentColor; white-space: nowrap; }
 
-/* Мини-анимации запускаются, только когда человек наводит курсор (или фокусирует строку).
+/* Мини-анимации запускаются при наведении или фокусе строки.
    На устройствах без курсора — играют сами (см. @media (hover: none) ниже). */
 .mini * { animation-play-state: paused; }
 .row:hover .mini *, .row:focus-visible .mini * { animation-play-state: running; }
 
-.mini-bend .m-punch { animation: m-punch 2.4s cubic-bezier(.55, 0, .25, 1) infinite; }
-.mini-bend .m-sheet { animation: m-sheet 2.4s cubic-bezier(.55, 0, .25, 1) infinite; }
+.mini-bend .m-punch { animation: m-punch 2.4s var(--ease) infinite; }
+.mini-bend .m-sheet { animation: m-sheet 2.4s var(--ease) infinite; }
 .mini-bend .sheet-l, .mini-bend .sheet-r { transform-box: view-box; transform-origin: 60px 59px; }
-.mini-bend .sheet-l { animation: bend-l 2.4s cubic-bezier(.55, 0, .25, 1) infinite; }
-.mini-bend .sheet-r { animation: bend-r 2.4s cubic-bezier(.55, 0, .25, 1) infinite; }
+.mini-bend .sheet-l { animation: bend-l 2.4s var(--ease) infinite; }
+.mini-bend .sheet-r { animation: bend-r 2.4s var(--ease) infinite; }
 @keyframes m-punch { 0%, 10% { transform: none; } 40%, 70% { transform: translateY(12px); } 95%, 100% { transform: none; } }
 @keyframes m-sheet { 0%, 22% { transform: none; } 40%, 70% { transform: translateY(11px); } 92%, 100% { transform: none; } }
 
-.mini-punch .m-striker { animation: m-strike .8s ease-in infinite; }
+.mini-punch .m-striker { animation: m-strike .8s var(--ease) infinite; }
 .mini-punch .holes circle { fill: var(--paper); stroke: var(--blue); stroke-width: 1.5; }
 @keyframes m-strike { 0%, 40% { transform: translateY(-6px); } 55% { transform: translateY(6px); } 100% { transform: translateY(-6px); } }
 
 .mini-grind .m-wheel { transform-box: view-box; transform-origin: 50px 44px; animation: spin 1s linear infinite; }
-.mini-grind .m-sparks circle { fill: #f2b233; opacity: 0; animation: spark .7s ease-out infinite; }
+.mini-grind .m-sparks circle { fill: #e9a23b; opacity: 0; animation: spark .7s var(--ease) infinite; }
 .mini-grind .m-sparks circle:nth-of-type(2) { animation-delay: -.2s; }
 .mini-grind .m-sparks circle:nth-of-type(3) { animation-delay: -.4s; }
 .mini-grind .m-sparks circle:nth-of-type(4) { animation-delay: -.55s; }
 @keyframes spin { to { transform: rotate(1turn); } }
 @keyframes spark { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translate(26px, 18px); } }
 
-.mini-shear .m-blade { animation: m-shear 1.6s cubic-bezier(.55, 0, .25, 1) infinite; }
+.mini-shear .m-blade { animation: m-shear 1.6s var(--ease) infinite; }
 @keyframes m-shear { 0%, 15% { transform: none; } 45%, 60% { transform: translateY(8px); } 90%, 100% { transform: none; } }
 
-.mini-knife .m-knife { animation: m-knife 1.6s cubic-bezier(.55, 0, .25, 1) infinite; }
+.mini-knife .m-knife { animation: m-knife 1.6s var(--ease) infinite; }
 @keyframes m-knife { 0%, 15% { transform: none; } 45%, 60% { transform: translateY(14px); } 90%, 100% { transform: none; } }
 
 /* Оборудование */
-.equipment { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; margin-top: 36px; }
-.equipment h3 { font-size: 22px; }
-.equipment ul { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.equipment { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; margin-top: 40px; }
+.equipment ul { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .equipment a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .equipment a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- О компании ---------- */
 .about { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; }
-.about-main p { max-width: 52ch; margin-bottom: 14px; }
-.facts { margin-top: 30px; border-top: 1px solid var(--rule); }
+.about-main p { max-width: 52ch; margin-bottom: 16px; color: var(--ink-2); }
+.facts { margin-top: 32px; border-top: 1px solid var(--rule); }
 .facts div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
 .facts dt { color: var(--ink-2); }
-.facts dd { font: 700 24px var(--cond); color: var(--blue); }
-.about-lists { display: grid; gap: 34px; padding-top: 70px; }
-.about-lists h3 { margin-bottom: 10px; }
-.about-lists ul { display: grid; gap: 6px; }
-.about-lists li { position: relative; padding-left: 22px; max-width: 60ch; }
-.about-lists li::before { content: ""; position: absolute; left: 0; top: .78em; width: 12px; height: 2px; background: var(--teal); }
+.facts dd { font: 500 20px var(--sans); color: var(--ink); font-variant-numeric: tabular-nums; }
+.about-lists { display: grid; gap: 32px; padding-top: 72px; }
+.about-lists h3 { margin-bottom: 8px; }
+.about-lists ul { display: grid; gap: 8px; }
+.about-lists li { position: relative; padding-left: 24px; max-width: 60ch; color: var(--ink-2); }
+/* фирменная деталь: короткая полоска «листа металла» */
+.about-lists li::before { content: ""; position: absolute; left: 0; top: .8em; width: 12px; height: 3px; border-radius: 2px; background: var(--teal); }
 
 /* ---------- Новости ---------- */
 .news { border-top: 1px solid var(--rule); }
-.news li { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
-.news time { color: var(--ink-2); font-size: 15px; padding-top: 2px; }
+.news li { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.news time { font: 400 13px/26px var(--mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .news a { text-decoration: none; max-width: 70ch; }
 .news a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 4px; }
 .more { display: inline-block; margin-top: 20px; color: var(--blue); font-weight: 500; text-underline-offset: 4px; }
 
-/* ---------- Контакты ---------- */
-.contacts { margin-top: 96px; background: var(--blue); color: #fff; }
+/* ---------- Контакты: тихая поверхность, акцент только на ссылках ---------- */
+.contacts { margin-top: 96px; background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .contacts-in { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-top: 64px; padding-bottom: 64px; }
-.contacts h2 { margin-bottom: 14px; }
-.contacts-note { max-width: 38ch; color: rgba(255, 255, 255, .8); }
-.contacts-list { display: grid; gap: 14px; align-content: start; }
-.phone { font: 700 clamp(40px, 5.4vw, 60px)/1 var(--cond); text-decoration: none; letter-spacing: .01em; }
-.phone:hover { color: #bfe8f3; }
-.c-link { display: inline-flex; align-items: center; gap: 10px; width: fit-content; text-decoration: none; font-size: 18px; border-bottom: 1px solid rgba(255, 255, 255, .35); padding-bottom: 2px; }
-.c-link:hover { border-bottom-color: #fff; }
-.c-link svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
-.contacts :focus-visible { outline-color: #bfe8f3; }
+.contacts h2 { margin-bottom: 16px; }
+.contacts-note { max-width: 38ch; color: var(--ink-2); }
+.contacts-list { display: grid; gap: 16px; align-content: start; }
+.phone { font: 500 clamp(40px, 5vw, 56px)/1 var(--sans); letter-spacing: -.03em; text-decoration: none; font-variant-numeric: tabular-nums; transition: color 150ms var(--ease); }
+.phone:hover { color: var(--blue); }
+.c-link { display: inline-flex; align-items: center; gap: 8px; width: fit-content; text-decoration: none; color: var(--blue); border-bottom: 1px solid rgba(11, 74, 139, .3); padding-bottom: 2px; transition: border-color 150ms var(--ease); }
+.c-link:hover { border-bottom-color: var(--blue); }
+.c-link svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; }
 
-.foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 22px; padding-bottom: 28px; font-size: 14px; color: var(--ink-2); }
-.foot a { color: var(--ink-2); }
+.foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px; padding-bottom: 32px; font-size: 14px; color: var(--ink-3); }
+.foot a { color: var(--ink-3); }
+.foot a:hover { color: var(--ink); }
 
 /* ---------- Кнопка «наверх» ---------- */
-.to-top { position: fixed; right: 20px; bottom: 20px; z-index: 20; width: 48px; height: 48px; border: 0; border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--white); color: var(--blue); box-shadow: 0 2px 10px rgba(21, 33, 45, .15); opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .25s, transform .25s; }
+.to-top { position: fixed; right: 20px; bottom: 20px; z-index: 20; width: 48px; height: 48px; border: 1px solid var(--rule); border-radius: 50%; display: grid; place-items: center; cursor: pointer; background: var(--white); color: var(--ink); box-shadow: 0 1px 2px rgba(20, 33, 48, .05); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 300ms var(--ease); }
 .to-top.show { opacity: 1; pointer-events: auto; transform: none; }
-.to-top .ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+.to-top .ring { position: absolute; inset: -1px; transform: rotate(-90deg); }
 /* длина окружности 2πr = 2·π·21 ≈ 132 */
-.to-top .ring circle { fill: none; stroke: var(--teal); stroke-width: 2.5; stroke-dasharray: 132; stroke-dashoffset: calc(132 - 132 * var(--p, 0)); }
-.to-top .up { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.to-top .ring circle { fill: none; stroke: var(--blue); stroke-width: 2; stroke-dasharray: 132; stroke-dashoffset: calc(132 - 132 * var(--p, 0)); }
+.to-top .up { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ---------- Адаптив ---------- */
 @media (max-width: 980px) {
   .menu, .top-phone { display: none; }
   .burger { display: block; margin-left: auto; position: relative; }
-  .burger summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-content: center; gap: 5px; }
+  .burger summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-content: center; gap: 4px; }
   .burger summary::-webkit-details-marker { display: none; }
-  .burger summary span { display: block; width: 24px; height: 2px; background: var(--ink); transition: transform .2s, opacity .2s; }
-  .burger[open] summary span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger summary span { display: block; width: 20px; height: 2px; border-radius: 1px; background: var(--ink); transition: transform 200ms var(--ease), opacity 200ms var(--ease); }
+  .burger[open] summary span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
   .burger[open] summary span:nth-child(2) { opacity: 0; }
-  .burger[open] summary span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .burger-menu { position: absolute; right: 0; top: 52px; min-width: 220px; display: grid; background: var(--white); border: 1px solid var(--rule); border-radius: 6px; padding: 6px; box-shadow: 0 10px 30px rgba(21, 33, 45, .12); }
-  .burger-menu a { padding: 11px 12px; text-decoration: none; border-radius: 4px; }
-  .burger-menu a:hover { background: var(--paper); color: var(--blue); }
-  .burger-menu a:last-child { font: 700 18px var(--cond); color: var(--blue); }
+  .burger[open] summary span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  /* меню появляется и поднимается на несколько пикселей от кнопки */
+  .burger-menu { position: absolute; right: 0; top: 52px; min-width: 224px; display: grid; background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 4px; box-shadow: 0 8px 24px rgba(20, 33, 48, .08); }
+  .burger[open] .burger-menu { animation: menu-in 200ms var(--ease); }
+  @keyframes menu-in { from { opacity: 0; transform: translateY(-6px); } }
+  .burger-menu a { padding: 8px 12px; line-height: 24px; text-decoration: none; border-radius: 8px; transition: background-color 150ms var(--ease); }
+  .burger-menu a:hover { background: var(--raised); }
+  .burger-menu a:last-child { font-weight: 500; color: var(--blue); font-variant-numeric: tabular-nums; }
 
-  .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 40px; padding-bottom: 16px; }
+  .hero { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding-top: 48px; padding-bottom: 16px; }
   .block { padding-top: 64px; }
   .about { grid-template-columns: 1fr; gap: 8px; }
   .about-lists { padding-top: 24px; }
-  .contacts-in { grid-template-columns: 1fr; gap: 24px; }
+  .contacts { margin-top: 64px; }
+  .contacts-in { grid-template-columns: 1fr; gap: 24px; padding-top: 48px; padding-bottom: 48px; }
 }
 @media (max-width: 720px) {
-  .row { grid-template-columns: 96px 1fr; gap: 4px 18px; padding: 16px 4px; }
+  .row { grid-template-columns: 96px 1fr; gap: 4px 16px; padding: 16px 4px; }
   .mini { width: 96px; height: 72px; grid-row: span 3; }
-  .row-name { font-size: 24px; }
+  .row-name { font-size: 20px; }
   .row-desc { font-size: 15px; }
   .row-link { justify-self: start; font-size: 14px; }
   .news li { grid-template-columns: 1fr; gap: 4px; }
 }
-/* На тач-устройствах наведения нет — мини-анимации играют сами */
 @media (hover: none) {
   .mini * { animation-play-state: running; }
 }
