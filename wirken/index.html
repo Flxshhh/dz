@@ -3,181 +3,320 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wirken — гибка металла</title>
-  <meta name="theme-color" content="#09090b">
+  <title>Wirken — инструмент для прессов</title>
+  <meta name="description" content="Поставки металлообрабатывающего оборудования и инструмента для листогибочных и координатно-пробивных прессов.">
+  <meta name="theme-color" content="#0b3d7a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Фон: сетка + световое пятно, которое следует за курсором -->
+  <!-- Фон: сетка + световое пятно за курсором -->
   <div class="bg-grid" aria-hidden="true"></div>
   <div class="bg-spot" aria-hidden="true"></div>
 
-  <!-- ===== Навигация (стеклянная, прилипает сверху) ===== -->
+  <!-- ===== Навигация ===== -->
   <header class="nav">
-    <a href="#" class="logo">
-      <span class="logo-mark">W</span> wirken
+    <a href="#" class="logo" aria-label="Wirken — на главную">
+      <!-- Знак из квадратов, как в оригинальном логотипе -->
+      <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2" y="16" width="6" height="6" fill="#9ca3af"/>
+        <rect x="9" y="16" width="6" height="6" fill="#4b5563"/>
+        <rect x="9" y="9" width="6" height="6" fill="#9ca3af"/>
+        <rect x="16" y="9" width="6" height="6" fill="#1565c0"/>
+        <rect x="16" y="2" width="6" height="6" fill="#1565c0"/>
+      </svg>
+      <span>wirken</span>
     </a>
     <nav class="nav-links">
-      <a href="#features">Услуги</a>
-      <a href="#work">Изделия</a>
-      <a href="#process">Как заказать</a>
-      <a href="#contact">Контакты</a>
+      <a href="#tools">Инструмент</a>
+      <a href="#equipment">Оборудование</a>
+      <a href="#about">О компании</a>
+      <a href="#news">Новости</a>
     </nav>
-    <button class="cmdk" id="cmdk-open" aria-label="Поиск">
+    <button class="cmdk" id="cmdk-open" aria-label="Поиск по сайту">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <span>Поиск…</span>
       <kbd>⌘K</kbd>
     </button>
-    <a href="#contact" class="btn btn-light btn-sm">Заказать</a>
+    <a href="tel:+78126122850" class="btn btn-dark btn-sm">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+      <span class="hide-xs">(812) 612-28-50</span>
+    </a>
   </header>
 
   <main>
     <!-- ===== Hero ===== -->
     <section class="hero">
-      <a href="#features" class="pill reveal">
-        <span class="pill-dot"></span> Принимаем заказы — расчёт по чертежу
+      <a href="#news" class="pill reveal">
+        <span class="pill-dot"></span> Новинка: ножи для продольной резки металла
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
       </a>
 
       <h1 class="hero-title">
-        <span class="word">Металл</span>
-        <span class="word">точно</span>
-        <span class="word gradient-text">по чертежу</span>
+        <span class="word">Инструмент</span>
+        <span class="word">для</span>
+        <span class="word gradient-text">прессов</span>
       </h1>
 
       <p class="hero-sub reveal">
-        Гибка и обработка листового металла: от единичных деталей до серий.
-        Пришлите чертёж — рассчитаем стоимость и сроки.
+        Поставляем металлообрабатывающее оборудование и инструмент для листогибочных
+        и координатно-пробивных прессов от европейских заводов-изготовителей.
       </p>
 
       <div class="hero-cta reveal">
-        <a href="#contact" class="btn btn-light magnetic">Рассчитать заказ
+        <a href="#contact" class="btn btn-dark magnetic">Рассчитать заказ
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
-        <a href="#work" class="btn btn-ghost">Наши изделия</a>
+        <a href="#tools" class="btn btn-ghost">Каталог инструмента</a>
       </div>
 
-      <!-- «Окно» с превью, как у 21st.dev: рамка с бегущим лучом -->
-      <div class="hero-preview reveal">
-        <div class="beam-border">
-          <div class="window">
-            <div class="window-bar">
-              <i></i><i></i><i></i>
-              <span class="window-url">wirkenrus.com / заказ</span>
-            </div>
-            <div class="window-body">
-              <div class="code" id="typed"></div>
-            </div>
-          </div>
-        </div>
+      <!-- Цифры компании со счётчиками -->
+      <div class="stats reveal">
+        <div><b><span class="count" data-to="2011" data-from="1990">2011</span></b><span>год основания</span></div>
+        <div><b><span class="count" data-to="5">5</span></b><span>товарных направлений</span></div>
+        <div><b><span class="count" data-to="500">500</span>+</b><span>клиентов</span></div>
       </div>
     </section>
 
-    <!-- ===== Бегущая строка с логотипами клиентов ===== -->
-    <section class="marquee-wrap" aria-label="Клиенты">
-      <p class="muted center small">Работаем с материалами</p>
+    <!-- ===== Бегущая строка: страны-производители и продукция ===== -->
+    <section class="marquee-wrap" aria-label="Производители">
+      <p class="muted center small">Европейские заводы-изготовители</p>
       <div class="marquee">
         <div class="marquee-track">
-          <span>Сталь</span><span>Нержавейка</span><span>Оцинковка</span><span>Алюминий</span>
-          <span>Медь</span><span>Латунь</span><span>Перфолист</span><span>Рифлёный лист</span>
+          <span>Германия</span><span class="dot">◆</span>
+          <span>Италия</span><span class="dot">◆</span>
+          <span>Швеция</span><span class="dot">◆</span>
+          <span>Чехия</span><span class="dot">◆</span>
+          <span>W-bend</span><span class="dot">◆</span>
+          <span>W-punch</span><span class="dot">◆</span>
+          <span>W-grind</span><span class="dot">◆</span>
         </div>
       </div>
     </section>
 
-    <!-- ===== Bento-сетка возможностей ===== -->
-    <section id="features" class="section">
+    <!-- ===== Инструмент: три продуктовые линейки ===== -->
+    <section id="tools" class="section">
       <div class="section-head reveal">
-        <span class="eyebrow">Услуги</span>
-        <h2>Полный цикл — <span class="gradient-text">в одном цеху</span></h2>
-        <p class="muted">От раскроя листа до готового изделия. <!-- TODO: сверить список услуг с реальным --></p>
+        <span class="eyebrow">Инструмент</span>
+        <h2>Три линейки — <span class="gradient-text">один поставщик</span></h2>
+        <p class="muted">Подберём инструмент под ваш пресс и рассчитаем стоимость в день обращения.</p>
       </div>
 
+      <div class="products">
+        <!-- W-bend: пуансон гнёт лист в V-матрицу -->
+        <a href="#contact" class="product spotlight reveal">
+          <div class="product-text">
+            <span class="tag">Листогибочные прессы</span>
+            <h3>W-bend</h3>
+            <p>Инструмент для гибочных прессов</p>
+            <span class="more">Подобрать →</span>
+          </div>
+          <svg class="viz viz-bend" viewBox="0 0 200 140" aria-hidden="true">
+            <path class="die" d="M50 110 H85 L100 125 L115 110 H150 V135 H50 Z"/>
+            <g class="sheet">
+              <line class="l" x1="100" y1="106" x2="40" y2="106"/>
+              <line class="r" x1="100" y1="106" x2="160" y2="106"/>
+            </g>
+            <path class="punch" d="M92 20 H108 V80 L100 102 L92 80 Z"/>
+          </svg>
+        </a>
+
+        <!-- W-punch: пробивка отверстий -->
+        <a href="#contact" class="product spotlight reveal">
+          <div class="product-text">
+            <span class="tag">Координатно-пробивные прессы</span>
+            <h3>W-punch</h3>
+            <p>Инструмент для пробивных прессов</p>
+            <span class="more">Подобрать →</span>
+          </div>
+          <svg class="viz viz-punch" viewBox="0 0 200 140" aria-hidden="true">
+            <rect class="plate" x="20" y="100" width="160" height="10" rx="2"/>
+            <g class="holes">
+              <circle cx="45" cy="105" r="0"/><circle cx="75" cy="105" r="0"/><circle cx="105" cy="105" r="0"/>
+              <circle cx="135" cy="105" r="0"/><circle cx="165" cy="105" r="0"/>
+            </g>
+            <g class="striker">
+              <rect x="88" y="10" width="34" height="40" rx="4" class="body"/>
+              <rect x="98" y="50" width="14" height="45" class="tip"/>
+            </g>
+          </svg>
+        </a>
+
+        <!-- W-grind: вращающийся круг и искры -->
+        <a href="#contact" class="product spotlight reveal">
+          <div class="product-text">
+            <span class="tag">Заточка инструмента</span>
+            <h3>W-grind</h3>
+            <p>Станки для заточки инструмента</p>
+            <span class="more">Подробнее →</span>
+          </div>
+          <div class="viz viz-grind" aria-hidden="true">
+            <div class="wheel"></div>
+            <div class="sparks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== Оборудование: bento ===== -->
+    <section id="equipment" class="section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Оборудование</span>
+        <h2>Станки под ваши задачи</h2>
+        <p class="muted">Поможем подобрать оборудование, максимально отвечающее потребностям вашего производства.</p>
+      </div>
       <div class="bento">
         <article class="card spotlight span-2 reveal">
-          <div class="card-icon">◆</div>
-          <h3>Гибка листового металла</h3>
-          <p class="muted">Гибка на листогибочном прессе: уголки, швеллеры, короба, сложный профиль. <!-- TODO: толщины, длина гиба --></p>
-          <svg class="bend" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 80 H95"/><path class="flap" d="M95 80 H190"/></svg>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="8" rx="1"/><path d="M3 12h18"/></svg>
+          </div>
+          <h3>Листообрабатывающее</h3>
+          <p class="muted">Оборудование для обработки листового металла.</p>
+          <div class="sheets" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
         </article>
         <article class="card spotlight reveal">
-          <div class="card-icon">◎</div>
-          <h3>Резка</h3>
-          <p class="muted">Раскрой листа под гибку. <!-- TODO: лазер/плазма/гильотина? --></p>
-          <div class="orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="6" cy="12" rx="3" ry="6"/><path d="M6 6h12M6 18h12"/><ellipse cx="18" cy="12" rx="3" ry="6"/></svg>
+          </div>
+          <h3>Для обработки труб</h3>
+          <p class="muted">Оборудование для работы с трубами.</p>
+          <div class="tube" aria-hidden="true"></div>
         </article>
         <article class="card spotlight reveal">
-          <div class="card-icon">✦</div>
-          <h3>Сварка и сборка</h3>
-          <p class="muted">Соединяем детали в готовые узлы. <!-- TODO --></p>
-          <div class="sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v4h-6v10h-4V9H4z"/></svg>
+          </div>
+          <h3>Для обработки профилей</h3>
+          <p class="muted">Оборудование для работы с профилем.</p>
+          <div class="profile-row" aria-hidden="true"><i>Г</i><i>П</i><i>Т</i><i>Z</i><i>Ш</i></div>
         </article>
         <article class="card spotlight span-2 reveal">
-          <div class="card-icon">⌘</div>
-          <h3>Изделия под ключ</h3>
-          <p class="muted">Изготовим по вашему чертежу или эскизу, при необходимости — с покраской.</p>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <h3>Расчёт в день обращения</h3>
+          <p class="muted">Учитываем все технические требования и точно соблюдаем сроки поставки.</p>
           <div class="chips" aria-hidden="true">
-            <span>Короба и корпуса</span><span>Кронштейны</span><span>Отливы и откосы</span><span>Профиль</span><span>Детали по чертежу</span>
+            <span>Гибкая схема оплаты</span><span>Складской запас</span><span>Запуск по гарантийному письму</span><span>Консультации</span>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- ===== Работы: карточки с 3D-наклоном ===== -->
-    <section id="work" class="section">
+    <!-- ===== О компании + преимущества ===== -->
+    <section id="about" class="section">
       <div class="section-head reveal">
-        <span class="eyebrow">Изделия</span>
-        <h2>Что мы делаем <!-- TODO: заменить градиенты фото --></h2>
+        <span class="eyebrow">О компании</span>
+        <h2>Европейское качество <span class="gradient-text">с 2011 года</span></h2>
+        <p class="muted">
+          Сотрудничаем с заводами Германии, Италии, Швеции, Чехии и других стран. Помогаем решать сложные
+          технологические задачи и создаём для каждого клиента взаимовыгодные условия.
+        </p>
       </div>
+
       <div class="grid-3">
-        <a class="work tilt reveal" href="#"><div class="work-img g1"></div><div class="work-meta"><b>Корпуса</b><span class="muted">TODO</span></div></a>
-        <a class="work tilt reveal" href="#"><div class="work-img g2"></div><div class="work-meta"><b>Кронштейны</b><span class="muted">TODO</span></div></a>
-        <a class="work tilt reveal" href="#"><div class="work-img g3"></div><div class="work-meta"><b>Доборные элементы</b><span class="muted">TODO</span></div></a>
+        <article class="feature reveal">
+          <div class="feature-n">01</div>
+          <h3>Ответственный подход</h3>
+          <ul class="check">
+            <li>Поставка европейской продукции высокого качества</li>
+            <li>Расчёт стоимости заказа в день обращения</li>
+            <li>Точное соблюдение сроков поставки</li>
+            <li>Учёт всех технических требований заказчика</li>
+          </ul>
+        </article>
+        <article class="feature reveal">
+          <div class="feature-n">02</div>
+          <h3>Профессиональные технические решения</h3>
+          <ul class="check">
+            <li>Решение производственных задач любого уровня сложности</li>
+            <li>Консультации специалистов на всех этапах сотрудничества</li>
+            <li>Оптимизация стоимости за счёт технических решений, а не снижения качества</li>
+          </ul>
+        </article>
+        <article class="feature reveal">
+          <div class="feature-n">03</div>
+          <h3>Ваши преимущества</h3>
+          <ul class="check">
+            <li>Лучшее соотношение цены и качества</li>
+            <li>Кратчайшие сроки поставки</li>
+            <li>Программа складского запаса для постоянных клиентов</li>
+            <li>Гибкая схема оплаты</li>
+            <li>Запуск в производство по гарантийному письму</li>
+            <li>Программа лояльности для торгующих организаций</li>
+          </ul>
+        </article>
       </div>
     </section>
 
-    <!-- ===== Процесс: шаги с линией прогресса ===== -->
-    <section id="process" class="section">
+    <!-- ===== Новости ===== -->
+    <section id="news" class="section">
       <div class="section-head reveal">
-        <span class="eyebrow">Процесс</span>
-        <h2>Как оформить заказ</h2>
+        <span class="eyebrow">Новости</span>
+        <h2>Что нового</h2>
       </div>
-      <ol class="steps">
-        <li class="reveal"><span class="step-n">01</span><div><h3>Заявка</h3><p class="muted">Присылаете чертёж, эскиз или размеры.</p></div></li>
-        <li class="reveal"><span class="step-n">02</span><div><h3>Расчёт</h3><p class="muted">Считаем стоимость и срок, согласуем детали.</p></div></li>
-        <li class="reveal"><span class="step-n">03</span><div><h3>Производство</h3><p class="muted">Режем, гнём, при необходимости свариваем и красим.</p></div></li>
-        <li class="reveal"><span class="step-n">04</span><div><h3>Выдача</h3><p class="muted">Самовывоз или доставка. <!-- TODO: условия доставки --></p></div></li>
-      </ol>
+      <div class="news">
+        <a href="#" class="news-item reveal">
+          <time datetime="2026-05-15">15.05.2026</time>
+          <h3>Ножи для продольной резки металла</h3>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#" class="news-item reveal">
+          <time datetime="2025-09-15">15.09.2025</time>
+          <h3>Автоматический станок V8 для заточки пуансонов и матриц: сенсорное управление, автоматический поиск поверхности и шлифование с охлаждением</h3>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+      <div class="center" style="margin-top:24px"><a href="#" class="btn btn-ghost">Все новости</a></div>
     </section>
 
-    <!-- ===== CTA ===== -->
+    <!-- ===== CTA / контакты ===== -->
     <section id="contact" class="section">
       <div class="cta reveal">
+        <div class="beam" aria-hidden="true"></div>
         <div class="cta-glow" aria-hidden="true"></div>
-        <h2>Нужен расчёт?</h2>
-        <p class="muted">Оставьте контакт — перезвоним и посчитаем заказ.</p>
-        <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Отправлено ✓'">
-          <input type="tel" placeholder="+7 (___) ___-__-__" required>
-          <button class="btn btn-light" type="submit">Отправить</button>
+        <span class="eyebrow">Позвоните нам</span>
+        <a href="tel:+78126122850" class="cta-phone">(812) 612-28-50</a>
+        <p class="muted">Или оставьте номер — перезвоним и рассчитаем стоимость в день обращения.</p>
+        <form class="cta-form" id="cta-form">
+          <input type="tel" placeholder="+7 (___) ___-__-__" required aria-label="Телефон">
+          <button class="btn btn-dark" type="submit">Жду звонка</button>
         </form>
+        <div class="socials">
+          <a href="#" aria-label="E-mail"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2.3V17h16V7.3l-8 5.2z"/></svg></a>
+          <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.4 13.1l-4.7-1.5c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3z"/></svg></a>
+          <a href="#" aria-label="Чат"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3zm0 4a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></svg></a>
+          <a href="tel:+78126122850" aria-label="Позвонить"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <span class="muted small">© <span id="year"></span> Wirken</span>
-    <span class="muted small">TODO: адрес · телефон · e-mail</span>
+    <span class="muted small">© 2011–<span id="year"></span> WIRKEN</span>
+    <a href="tel:+78126122850" class="muted small">(812) 612-28-50</a>
   </footer>
 
-  <!-- ===== Командная палитра ⌘K ===== -->
+  <!-- Кнопка «наверх» с кольцом прогресса прокрутки -->
+  <button class="to-top" id="to-top" aria-label="Наверх">
+    <svg class="ring" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21"/></svg>
+    <svg class="arrow-up" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Командная палитра ⌘K -->
   <div class="palette" id="palette" hidden>
     <div class="palette-box">
-      <input id="palette-input" placeholder="Куда перейти?" autocomplete="off">
+      <input id="palette-input" placeholder="Поиск по сайту…" autocomplete="off">
       <ul id="palette-list">
-        <li data-href="#features">Услуги</li>
-        <li data-href="#work">Изделия</li>
-        <li data-href="#process">Процесс</li>
+        <li data-href="#tools">W-bend — инструмент для гибочных прессов</li>
+        <li data-href="#tools">W-punch — инструмент для пробивных прессов</li>
+        <li data-href="#tools">W-grind — станки для заточки</li>
+        <li data-href="#equipment">Листообрабатывающее оборудование</li>
+        <li data-href="#equipment">Оборудование для обработки труб</li>
+        <li data-href="#equipment">Оборудование для обработки профилей</li>
+        <li data-href="#about">О компании</li>
+        <li data-href="#news">Новости</li>
         <li data-href="#contact">Контакты</li>
       </ul>
     </div>
